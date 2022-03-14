@@ -1,20 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, {useState} from 'react'
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CoordinatesForm from "./CoordinatesForm"
 import { WiDayLightning } from "react-icons/wi";
 
 function App() {
+  
   document.title = "Meteo: Get Accurate Weather Updates!";
+
   return (
     <div className="App">
       <header className="App-header">
@@ -23,16 +20,12 @@ function App() {
           Welcome to Meteo
         </Typography>
       </header>
-      <FormControl>
-        <FormLabel id="demo-controlled-radio-buttons-group">Get forecast by:</FormLabel>
-          <RadioGroup aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
-            value={""}
-            onChange={console.log("nope")}>
-            <FormControlLabel value="city name" control={<Radio />} label="City Name" />
-            <FormControlLabel value="coordinates" control={<Radio />} label="Coordinates" />
-          </RadioGroup>
-      </FormControl>
+      <Typography variant="h4" component="h4">
+          Enter the coordinates of your location to get weather forecast
+        </Typography>
+        <br/>
+        <br/>
+      <CoordinatesForm/>
     </div>
   );
 }

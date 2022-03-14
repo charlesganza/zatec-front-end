@@ -2,6 +2,26 @@
   text-align: center;
 }
 
+.field-form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 110px;
+}
+
+.fields {
+  display: flex;
+  justify-content: space-between;
+  width: 450px;
+  margin-bottom: 10px;
+}
+
+Button {
+  width: 450px;
+  height: 70px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
