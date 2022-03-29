@@ -5,11 +5,15 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { MdOutlineLiveTv } from "react-icons/md";
+import {TextField, IconButton} from "@material-ui/core";
+import { BiSearchAlt } from "react-icons/bi";
+import { MdOutlineLiveTv} from "react-icons/md";
+import { useNavigate  } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
+  const navigateTo = () => navigate('/result');
+
   document.title = "Your One Source of Entertainment!";
 
   //flag to prevent automatically validating the textfield as soon as the app is opened
@@ -31,8 +35,8 @@ function App() {
   }
 
   const handleTextFieldChange = (e) => {
-    if(autoValidate['validate']){
-       setSearchError({ ...searchFieldError, hasError: !validateForm(e.target.value) })
+    if (autoValidate['validate']) {
+      setSearchError({ ...searchFieldError, hasError: !validateForm(e.target.value) })
     }
     setSearchQuery({ ...searchQuery, [e.target.name]: e.target.value })
   }
@@ -43,8 +47,8 @@ function App() {
     setSearchError({ ...searchFieldError, hasError: !isValid })
 
     if (isValid) {
-       console.log("yep");
-    } 
+      navigateTo();
+    }
   }
 
   return (
@@ -60,15 +64,24 @@ function App() {
       </Typography>
       <br />
       <br />
-      <TextField id="outlined-basic"
-        label="Search..." variant="outlined"
-        value={searchQuery.query}
-        name="query"
-        onChange={handleTextFieldChange}
-        helperText={searchFieldError.hasError ? 'At least 3 characters required!' : ''}
-        inputProps={{ maxLength: 25 }}
-        error={searchFieldError.hasError} />
-      <Button variant="contained" onClick={search}>Search</Button>
+      <div className='field-form'>
+        <TextField id="outlined-basic"
+          label="Search..." variant="outlined"
+          value={searchQuery.query}
+          name="query"
+          onChange={handleTextFieldChange}
+          helperText={searchFieldError.hasError ? 'At least 3 characters required!' : ''}
+          inputProps={{ maxLength: 25 }}
+          error={searchFieldError.hasError}
+          InputProps={{
+            endAdornment: (
+              <IconButton onClick={search}>
+                <BiSearchAlt />
+              </IconButton>
+            ),
+          }}
+        />
+      </div>
     </div>
   );
 }
