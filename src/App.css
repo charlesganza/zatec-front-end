@@ -4,6 +4,10 @@
   margin-bottom: 20px;
 }
 
+.hoverClass:hover {
+  cursor: pointer;
+}
+
 .field-form {
   display: flex;
   align-items: center;

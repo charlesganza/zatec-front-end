@@ -5,6 +5,7 @@ import App from './App';
 import PeoplePage from './pages/PeoplePage';
 import SearchResult from './pages/SearchResult';
 import CategoriesList from './pages/CategoriesList';
+import CategoryDetail from './pages/CategoryDetail';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -19,6 +20,7 @@ ReactDOM.render(
       <Route exact path="/" element = {<App />} />
       <Route exact path="/search/:query" element = {<SearchResult />} />
       <Route exact path="/categories" element = {<CategoriesList />} />
+      <Route exact path="/categories/:category" element = {<CategoryDetail />} />
       <Route exact path="/people" element = {<PeoplePage />} />
     </Routes>
   </Router>,

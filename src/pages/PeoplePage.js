@@ -46,7 +46,7 @@ const PeoplePage = () => {
       <div>
          <HeaderSecondary />
          <Navigator />
-         <Grid container item xs={12} alignItems="center" direction="column" style={{ gap: 25 }}>
+         <Grid container item xs={12} alignItems="center" direction="column" style={{ gap: 25, marginBottom: 50 }}>
             <Typography style={{ padding: 20 }} variant="h4" component="h4">
                People
             </Typography>
