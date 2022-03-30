@@ -12,7 +12,7 @@ import '../App.css';
 
 const CategoryItem = (props) => {
     const navigate = useNavigate();
-    const navigateTo = (e) => navigate('/categories/' + e.target.name);
+    const navigateTo = (category) => navigate('/categories/' + category);
 
     const categories = Array.from(props.categories);
 
@@ -37,7 +37,7 @@ const CategoryItem = (props) => {
                             <List>
                                 {
                                     categories.map((category) => (
-                                        <ListItem className={'hoverClass'} name={category} key={category} value={category} onClick={navigateTo}>
+                                        <ListItem className={'hoverClass'} key={category} onClick={() => navigateTo(category)}>
                                                 <ListItemAvatar>
                                                     <Avatar>
                                                         <BiCategory />
