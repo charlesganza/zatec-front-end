@@ -10,7 +10,8 @@ import Stack from '@mui/material/Stack';
 import { BiSearchAlt } from "react-icons/bi";
 import { MdOutlineLiveTv } from "react-icons/md";
 import { useNavigate, Link } from "react-router-dom";
-import Header from "./component/Header";
+import Header from "./component/HeaderMain";
+import Navigator from "./component/Navigator";
 
 const App = () => {
   const navigate = useNavigate();
@@ -53,48 +54,47 @@ const App = () => {
     }
   }
 
+  const onEnter = (event, callback) => event.key === 'Enter' && callback()
+
   return (
     <div className="App">
-      <Header/>
-      <Stack alignItems="center" justifyContent="center">
-      <Grid>
-      <Link to='/categories'><Button variant="text">Categories</Button></Link>
-      <Link to='/people'><Button variant="text">People</Button></Link>
-      </Grid>
-      </Stack>
-      
+      <Header />
+      <Navigator/>
       <Stack alignItems="center">
-      <Paper outlined elevation={10} style={{
-        width: '50vh',
-        height: '20vh',
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        borderRadius: "20px",
-        padding: '50px',
-      }} >
-        <Grid container alignItems="center" direction="column" style={{gap: 25}}>
-        <Typography variant="h4" component="h4">
-            Search for People or Jokes
-          </Typography>
-          <TextField id="outlined-basic"
-            label="Search..." variant="outlined"
-            value={searchQuery.query}
-            name="query"
-            onChange={handleTextFieldChange}
-            helperText={searchFieldError.hasError ? 'At least 3 characters required!' : ''}
-            inputProps={{ maxLength: 25 }}
-            error={searchFieldError.hasError}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={search}>
-                  <BiSearchAlt />
-                </IconButton>
-              ),
-            }}
-          />
-        </Grid>
-      </Paper>
+        <Paper outlined elevation={10} style={{
+          width: '50vh',
+          height: '20vh',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'row',
+          borderRadius: "20px",
+          padding: '50px',
+        }} >
+          <Grid container alignItems="center" direction="column" style={{ gap: 25 }}>
+            <Typography variant="h4" component="h4">
+              Search for People or Jokes
+            </Typography>
+            <TextField id="outlined-basic"
+              label="Search..." variant="outlined"
+              value={searchQuery.query}
+              name="query"
+              onChange={handleTextFieldChange}
+              helperText={searchFieldError.hasError ? 'At least 3 characters required!' : ''}
+              inputProps={{ maxLength: 25 }}
+              error={searchFieldError.hasError}
+              onKeyDown={(e) => {
+                onEnter(e, search);
+              }}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={search}>
+                    <BiSearchAlt />
+                  </IconButton>
+                ),
+              }}
+            />
+          </Grid>
+        </Paper>
       </Stack>
     </div>
   );

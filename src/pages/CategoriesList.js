@@ -1,46 +1,71 @@
-import React, { useRef, useState, Component } from 'react';
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import List from "@material-ui/core/List";
-import TextField from "@material-ui/core/TextField";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import ReactDOM from 'react-dom';
-import Button from "@material-ui/core/Button";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
+import axios from '../networking/BaseAxios';
+import { useParams } from "react-router-dom";
+import Typography from '@mui/material/Typography';
+import { Grid, Button } from "@material-ui/core";
+import { isNotEmpty } from "../utils/Helpers";
+import CircularProgress from '@mui/material/CircularProgress';
+import CategoryItem from '../component/CategoryItem';
+import Navigator from '../component/Navigator';
+import HeaderSecondary from '../component/HeaderSecondary';
 
-const CategoriesList = (props) => {
+const CategoriesList = () => {
+   let params = useParams();
 
-   // Create form initial state
-   const [coordinates, setCoordinates] = useState({
-      latitude: '',
-      longitude: ''
-   })
+   const [successful, setSuccessful] = React.useState(true);
 
-   // Create form initial state
-   const [loading, setLoading] = useState({
-      isLoading: false
-   })
+   const [loading, setLoading] = React.useState(false);
 
-   React.useEffect(() => {
-      getUpdates();
-   });
+   const [categories, setCategoriesList] = React.useState({});
 
-   const getUpdates = () => {
-      axios.get('http://localhost:8080/api/chuck/categories')
-         .then(function (response) {
-            console.table(response);
-         }).catch((error) => {
-            console.table(error);
-            // setLoading({loading, isLoading: false});
-         });
+   const retry = () => {
+      if (!loading) {
+         getCategories();
+      }
+   };
+
+   const getCategories = async () => {
+      setLoading(true)
+      await axios.get('/chuck/categories').then(response => {
+         let data = response.data;
+
+         setCategoriesList(data)
+         setLoading(false)
+         setSuccessful(true)
+      }).catch((error) => {
+         setSuccessful(false)
+         setLoading(false)
+      })
    }
 
-   return (
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+   React.useEffect(() => {
+      getCategories();
+   }, []);
 
-      </List>
+   return (
+      <div>
+         <HeaderSecondary/>
+         <Navigator/>
+         <Grid container item xs={12} alignItems="center" direction="column" style={{ gap: 25 }}>
+            <Typography style={{ padding: 20 }} variant="h4" component="h4">
+               Categories
+            </Typography>
+            {
+               isNotEmpty(categories) && (
+                  <CategoryItem categories={categories}/>
+               )
+            }
+            {
+               !successful ? <Button
+                  variant="contained"
+                  onClick={retry}>Retry...</Button> : null
+            }
+            {
+               loading ? <CircularProgress /> : null
+            }
+         </Grid>
+
+      </div>
    )
 
 }

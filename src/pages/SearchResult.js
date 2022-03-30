@@ -1,80 +1,74 @@
-import React, { useState } from 'react';
-import '../App.css';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import Axis from '../networking/BaseAxios';
-import Header from "../component/Header";
-import axios from "axios";
+import React from 'react';
+import axios from '../networking/BaseAxios';
 import { useParams } from "react-router-dom";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
+import PeopleItem from '../component/PeopleItem';
+import JokeView from '../component/JokeView';
 import Typography from '@mui/material/Typography';
-import { Paper, Grid, Button } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
+import { isNotEmpty } from "../utils/Helpers";
+import CircularProgress from '@mui/material/CircularProgress';
+import HeaderSecondary from '../component/HeaderSecondary';
 
 const SearchResult = () => {
     let params = useParams();
 
-    const [loading, setLoaded] = React.useState(false);
+    const [successful, setSuccessful] = React.useState(true);
 
-    const [peopleList, setPeopleList] = React.useState({});
+    const [loading, setLoading] = React.useState(false);
 
-    const [jokeList, setJokesList] = React.useState({});
+    const [peopleList, setPeopleList] = React.useState(undefined);
 
-    React.useEffect(() => {
-        search();
-    }, [peopleList, jokeList]);
+    const [jokeList, setJokesList] = React.useState(undefined);
+
+    const retry = () => {
+        if (!loading) {
+            search();
+        }
+    };
 
     const search = async () => {
-        await Axis.get('/search/', { params: { query: params.query } }).then(response => {
-            let json = JSON.parse(JSON.stringify(response))["data"];
-            let data = new Map(Object.entries(json)) //convert json to map
+        setLoading(true)
+        await axios.get('/search/', { params: { query: params.query } }).then(response => {
+            let data = response.data;
 
-            setPeopleList(peopleList, data.get("people"))
-            setJokesList(jokeList, data.get("jokes"))
-            console.log(json);
+            setPeopleList(data.people)
+            setJokesList(data.jokes)
+            setLoading(false)
+            setSuccessful(true)
         }).catch((error) => {
-            console.table(error);
+            setSuccessful(false)
+            setLoading(false)
         })
     }
 
+    React.useEffect(() => {
+        search();
+    }, []);
+
     return (
-        <div className="App">
-            <Grid container alignItems="center" direction="column" style={{ gap: 25 }}>
-                <Typography variant="h4" component="h4">
-                    Search Results
+        <div>
+            <HeaderSecondary/>
+            <Grid container item xs={12} alignItems="center" direction="column" style={{ gap: 25 }}>
+                <Typography style={{ padding: 20 }} variant="h4" component="h4">
+                    Search Results for <b>{params.query}</b>
                 </Typography>
                 {
-                    // peopleList.people.map((person, index) => {
-                    //     return (
-                    //         <ListItem alignItems="flex-start">
-                    //             <ListItemAvatar>
-                    //                 <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                    //             </ListItemAvatar>
-                    //             <ListItemText
-                    //                 primary="Oui Oui"
-                    //                 secondary={
-                    //                     <React.Fragment>
-                    //                         <Typography
-                    //                             sx={{ display: 'inline' }}
-                    //                             component="span"
-                    //                             variant="body2"
-                    //                             color="text.primary"
-                    //                         >
-                    //                             Sandra Adams
-                    //                         </Typography>
-                    //                         {' — Do you have Paris recommendations? Have you ever…'}
-                    //                     </React.Fragment>
-                    //                 }
-                    //             />
-                    //         </ListItem>
-                    //     )
-                    // })
+                    isNotEmpty(peopleList) && (
+                        <PeopleItem people={peopleList.people.results} />
+                    )
+                }
+                {
+                    isNotEmpty(jokeList) && (
+                        <JokeView jokes={jokeList.jokes.result} />
+                    )
+                }
+                {
+                    !successful && !loading ? <Button
+                        variant="contained"
+                        onClick={retry}>Retry...</Button> : null
+                }
+                {
+                    loading ? <CircularProgress/> : null
                 }
             </Grid>
 
