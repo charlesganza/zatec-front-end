@@ -1,4 +1,5 @@
 import React from 'react';
+import '../App.css';
 import axios from '../networking/BaseAxios';
 import { useParams } from "react-router-dom";
 import Typography from '@mui/material/Typography';
@@ -8,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CategoryItem from '../component/CategoryItem';
 import Navigator from '../component/Navigator';
 import HeaderSecondary from '../component/HeaderSecondary';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 const CategoriesList = () => {
    let params = useParams();
@@ -44,20 +46,21 @@ const CategoriesList = () => {
 
    return (
       <div>
-         <HeaderSecondary/>
-         <Navigator/>
+         <HeaderSecondary />
+         <Navigator />
          <Grid container item xs={12} alignItems="center" direction="column" style={{ gap: 25 }}>
             <Typography style={{ padding: 20 }} variant="h4" component="h4">
                Categories
             </Typography>
             {
                isNotEmpty(categories) && (
-                  <CategoryItem categories={categories}/>
+                  <CategoryItem categories={categories} />
                )
             }
             {
-               !successful ? <Button
-                  variant="contained"
+               !successful && !loading ? <Button
+                  className="retry"
+                  variant="outlined" startIcon={<ChangeCircleIcon />}
                   onClick={retry}>Retry...</Button> : null
             }
             {

@@ -1,4 +1,5 @@
 import React from 'react';
+import '../App.css';
 import axios from '../networking/BaseAxios';
 import { useParams } from "react-router-dom";
 import PeopleItem from '../component/PeopleItem';
@@ -8,6 +9,8 @@ import { Grid, Button } from "@material-ui/core";
 import { isNotEmpty } from "../utils/Helpers";
 import CircularProgress from '@mui/material/CircularProgress';
 import HeaderSecondary from '../component/HeaderSecondary';
+import Navigator from '../component/Navigator';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 const SearchResult = () => {
     let params = useParams();
@@ -47,14 +50,15 @@ const SearchResult = () => {
 
     return (
         <div>
-            <HeaderSecondary/>
+            <HeaderSecondary />
+            <Navigator />
             <Grid container item xs={12} alignItems="center" direction="column" style={{ gap: 25 }}>
                 <Typography style={{ padding: 20 }} variant="h4" component="h4">
                     Search Results for <b>{params.query}</b>
                 </Typography>
                 {
                     isNotEmpty(peopleList) && (
-                        <PeopleItem people={peopleList.people.results} />
+                        <PeopleItem people={peopleList.people.results} showHeader={true} />
                     )
                 }
                 {
@@ -64,11 +68,12 @@ const SearchResult = () => {
                 }
                 {
                     !successful && !loading ? <Button
-                        variant="contained"
+                        className="retry"
+                        variant="outlined" startIcon={<ChangeCircleIcon />}
                         onClick={retry}>Retry...</Button> : null
                 }
                 {
-                    loading ? <CircularProgress/> : null
+                    loading ? <CircularProgress /> : null
                 }
             </Grid>
 

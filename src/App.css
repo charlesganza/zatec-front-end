@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: bisque;
+  margin-bottom: 20px;
 }
 
 .field-form {
@@ -19,6 +21,10 @@
 Button {
   width: 100px;
   height: 70px;
+}
+
+.retry {
+  width: 200px;
 }
 
 .App-logo {

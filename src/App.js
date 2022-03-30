@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -8,8 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { TextField, IconButton, Paper, Grid, Button } from "@material-ui/core";
 import Stack from '@mui/material/Stack';
 import { BiSearchAlt } from "react-icons/bi";
-import { MdOutlineLiveTv } from "react-icons/md";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "./component/HeaderMain";
 import Navigator from "./component/Navigator";
 
@@ -57,7 +56,7 @@ const App = () => {
   const onEnter = (event, callback) => event.key === 'Enter' && callback()
 
   return (
-    <div className="App">
+    <div>
       <Header />
       <Navigator/>
       <Stack alignItems="center">
