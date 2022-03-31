@@ -70,7 +70,7 @@ const App = () => {
           padding: '50px',
         }} >
           <Grid container alignItems="center" direction="column" style={{ gap: 25 }}>
-            <Typography variant="h4" component="h4">
+            <Typography variant="h6" component="h6">
               Search for People or Jokes
             </Typography>
             <TextField id="outlined-basic"
